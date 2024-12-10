@@ -21,8 +21,8 @@ export default function Resources({ item }) {
         });
     }
 
-    useEffect(async () => {
-        await getResources();
+    useEffect(() => {
+        getResources();
     }, [item]);
 
     const getResources = async () => {
@@ -30,7 +30,6 @@ export default function Resources({ item }) {
         setOriginalItems([]);
         const res = await fetch(`https://api.xivtools.co/recipe/resources?item=${item.id}&amount=1`);
         let data = await res.json();
-        setResources(data);
         data.map(async (resource) => {
             const i = await getItemData(resource);
             addItemData(i, resource.amount);
