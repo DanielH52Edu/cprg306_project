@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import SearchResults from './SearchResults';
 import axios from 'axios';
 
@@ -8,7 +8,7 @@ const Search = ({ handleSelectedItem }) => {
     const [filteredData, setFilteredData] = useState([]);
     const [prevSearchTerm, setPrevSearchTerm] = useState('');
 
-    const getSearchResult = async (term) => {
+    const getSearchResult = useCallback(async (term) => {
         if (term === prevSearchTerm) {
             return;
         }
@@ -22,7 +22,7 @@ const Search = ({ handleSelectedItem }) => {
         );
 
         setOriginalData(prevData => [...prevData, ...uniqueData]);
-    };
+    }, [prevSearchTerm, originalData]);
 
     useEffect(() => {
         const filterData = () => {
@@ -39,7 +39,7 @@ const Search = ({ handleSelectedItem }) => {
         };
 
         filterData();
-    }, [searchTerm, originalData]);
+    }, [searchTerm, originalData, getSearchResult]);
 
     const handleInputChange = (e) => {
         setSearchTerm(e.target.value);
@@ -47,7 +47,7 @@ const Search = ({ handleSelectedItem }) => {
 
     return (
         <div className="w-max">
-            <p className="text-white">Example: Everseeker's Pickaxe</p>
+            <p className="text-white">Example: Everseeker&rsquo;s Pickaxe</p>
             <input
                 type="text"
                 className="search-input"

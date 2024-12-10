@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 
 export default function Resources({ item }) {
 
-    const [resources, setResources] = useState(null);
     const [items, setItems] = useState([]);
     const [originalItems, setOriginalItems] = useState([]);
     const [amount, setAmount] = useState(1);
@@ -22,8 +21,8 @@ export default function Resources({ item }) {
         });
     }
 
-    useEffect(() => {
-        getResources();
+    useEffect(async () => {
+        await getResources();
     }, [item]);
 
     const getResources = async () => {
@@ -32,7 +31,7 @@ export default function Resources({ item }) {
         const res = await fetch(`https://api.xivtools.co/recipe/resources?item=${item.id}&amount=1`);
         let data = await res.json();
         setResources(data);
-        data.map(async (resource, index) => {
+        data.map(async (resource) => {
             const i = await getItemData(resource);
             addItemData(i, resource.amount);
         });
